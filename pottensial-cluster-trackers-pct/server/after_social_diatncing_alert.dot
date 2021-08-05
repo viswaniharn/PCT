@@ -1,0 +1,6 @@
+graph G {
+  "Batman" -- "Robin" [label="2020-07-31 20:57:35"];
+  "Robin" -- "Thor" [label="2020-07-30 09:09:54"];
+  "Ironman" -- "Thor" [label="2020-07-28 20:57:35"];
+  "Hulk"  ;
+}

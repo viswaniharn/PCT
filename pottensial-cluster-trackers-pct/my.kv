@@ -1,0 +1,145 @@
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
+<MainWindow>:
+    name: "main"
+
+    userid: userid
+    passkey: passkey
+
+    FloatLayout:
+
+        Label:
+            text: "Name: "
+            font_size: (root.width + root.height) / 40
+            pos_hint: {"x":0.1, "top":0.8}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: userid
+            font_size: (root.width + root.height) / 40
+            multiline: False
+            pos_hint: {"x": 0.45 , "top":0.75}
+            size_hint: 0.4, 0.0725
+
+        Label:
+            text: "Password: "
+            font_size: (root.width + root.height) / 40
+            pos_hint: {"x":0.1, "top":0.6}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: passkey
+            font_size: (root.width + root.height) / 40
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.45, "top":0.55}
+            size_hint: 0.4, 0.0725
+
+    Button:
+        text: "Submit"
+        pos_hint:{"x":0.35,"top":0.35}
+        size_hint: 0.35, 0.1
+        font_size: (root.width + root.height) / 40
+        on_release:
+            if root.validate_credentials() == True: \
+            root.manager.screens[1].ids.wel_msg.text = "Welcome Home, " + root.ids.userid.text + "!!"; \
+            app.root.current = "second"; \
+            root.manager.screens[1].userid = root.ids.userid.text; \
+            root.manager.screens[1].passkey = root.ids.passkey.text; \
+            root.ids.passkey.text = ""; \
+            root.manager.screens[1].start_location_search(); \
+            root.manager.transition.direction = "left"
+
+<SecondWindow>:
+    name: "second"
+
+    GridLayout:
+        cols:1
+
+        GridLayout:
+            cols:3
+            size_hint_y: 0.3
+
+            Label:
+                id: wel_msg
+                text: ""
+                size_hint_x: 3
+
+            Button:
+                text: "Get Alerts"
+                size_hint_x: 1
+                on_release:
+                    root.get_covid_alerts()
+
+            Button:
+                text: "Log Out"
+                size_hint_x: 1
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+                    root.manager.screens[1].stop_location_search()
+
+        Label:
+            text: root.location
+
+        GridLayout:
+            cols:2
+
+            Label:
+                text: "Self Declare"
+
+            GridLayout:
+                cols:1
+
+                Button:
+                    text: "Positive"
+                    on_release:
+                        root.self_declare("positive")
+
+                Button:
+                    text: "Negative"
+                    on_release:
+                        root.self_declare("negative")
+
+        Label:
+            text: "Covid Alerts"
+            spacing: 50
+            size_hint_y: 0.7
+            size_hint_x: 1
+            height: 200
+
+        Label:
+            text: root.status
+            spacing: 50
+            size_hint_y: 0.5
+            size_hint_x: 1
+            height: 200
+
+        Label:
+            text: root.assoc_infections
+            spacing: 50
+            size_hint_y: 0.5
+            size_hint_x: 1
+            height: 200
+
+        Label:
+            text: root.total_infections
+            spacing: 50
+            size_hint_y: 0.5
+            size_hint_x: 1
+            height: 200
+
+        Label:
+            text: root.total_recoveries
+            spacing: 50
+            size_hint_y: 0.5
+            size_hint_x: 1
+            height: 200
+
+<Popups>:
+    Label:
+        text: root.popup_label
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":0.65}
